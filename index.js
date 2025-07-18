@@ -1,59 +1,61 @@
-var svg = d3.select('svg');
+// Declare the chart dimensions and margins.
+const width = 928;
+const height = 500;
+const marginTop = 20;
+const marginRight = 30;
+const marginBottom = 30;
+const marginLeft = 40;
 
-// Append a circle element to the SVG
-//d3.select('svg').append('circle').attr('cx', 50).attr('cy', 50).attr('r', 40).attr('fill', 'blue');
-// Bind data and append new circle elements and turn them red
-//svg.selectAll('circle').attr('fill', 'red');
+
+// Create the SVG container.
+  const svg = d3.select("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
 
 
-// import Domestic Auto Production data from years 1994 - 2025 seasonally adjusted - DAUPSA.csv
+// import Domestic Auto Production data from years 1993 - 2025 seasonally adjusted - DAUPSA.csv
 const daupsa = d3.csv("DAUPSA.csv").then(function(data) {
-    // create a bar chart with the Domestic Auto Production data
+
+    // Declare the x (horizontal position) scale.
+    const x = d3.scaleUtc(d3.extent(data, d => Date(d.observation_date)), [marginLeft, width - marginRight]);
+
+    // Declare the y (vertical position) scale.
+    const y = d3.scaleLinear([0, d3.max(data, d => Number(d.DAUPSA))], [height - marginBottom, marginTop]);
+
+
     
-    // Parse the data
-    data.forEach(function(d) {
-        d.observation_date = +d.observation_date;
-        d.DAUPSA = +d.DAUPSA;
-    });
+    // console.log(Math.max(data, d => d.DAUPSA));
+    console.log(data.map(d => d.observation_date));
+    
+    // // Add the x-axis.
+    svg.append("g")
+        .attr("transform", `translate(0,${height - marginBottom})`)
+        .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
 
-    // Set the dimensions of the SVG
-    const width = 800;
-    const height = 400;
+    // // Add the y-axis, remove the domain line, add grid lines and a label.
+    svg.append("g")
+        .attr("transform", `translate(${marginLeft},0)`)
+        .call(d3.axisLeft(y).ticks(height / 20))
+        .call(g => g.select(".domain").remove())
+        .call(g => g.selectAll(".tick line").clone()
+            .attr("x2", width - marginLeft - marginRight)
+            .attr("stroke-opacity", 0.1))
+        .call(g => g.append("text")
+            .attr("x", -marginLeft)
+            .attr("y", 10)
+            .attr("fill", "currentColor")
+            .attr("text-anchor", "start")
+            .text("↑ DAUPSA ($ Millions)"));
 
-    // Create scales
-    const xScale = d3.scaleBand()
-        .domain(data.map(d => d.year))
-        .range([0, width])
-        .padding(0.1);
+    // // Declare the line generator.
+    const line = d3.line()
+        .x(d => x(d.observation_date))
+        .y(d => y(d.DAUPSA));
 
-    const yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.DAUPSA)])
-        .range([height, 0]);
 
-    // Append a group element to the SVG
-    const g = svg.append('g')
-        .attr('transform', `translate(50, 50)`);
-
-    // Create bars
-    g.selectAll('rect')
-        .data(data)
-        .enter()
-        .append('rect')
-        .attr('x', d => xScale(d.observation_date))
-        .attr('y', d => yScale(d.DAUPSA))
-        .attr('width', xScale.bandwidth())
-        .attr('height', d => height - yScale(d.DAUPSA))
-        .attr('fill', 'steelblue');
-
-    // Add axes
-    g.append('g')
-        .attr('class', 'x-axis')
-        .attr('transform', `translate(0, ${height})`)
-        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
-
-    g.append('g')
-        .attr('class', 'y-axis')
-        .call(d3.axisLeft(yScale));
 });
+
 
