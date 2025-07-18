@@ -20,16 +20,11 @@ const marginLeft = 40;
 const daupsa = d3.csv("DAUPSA.csv").then(function(data) {
 
     // Declare the x (horizontal position) scale.
-    const x = d3.scaleUtc(d3.extent(data, d => Date(d.observation_date)), [marginLeft, width - marginRight]);
+    const x = d3.scaleUtc(d3.extent(data, d => new Date(d.observation_date + "T00:00:00Z")), [marginLeft, width - marginRight]);
 
     // Declare the y (vertical position) scale.
     const y = d3.scaleLinear([0, d3.max(data, d => Number(d.DAUPSA))], [height - marginBottom, marginTop]);
 
-
-    
-    // console.log(Math.max(data, d => d.DAUPSA));
-    console.log(data.map(d => d.observation_date));
-    
     // // Add the x-axis.
     svg.append("g")
         .attr("transform", `translate(0,${height - marginBottom})`)
