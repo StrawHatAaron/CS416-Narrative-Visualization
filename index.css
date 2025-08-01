@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+button{
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: steelblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 120px; /* Fixed width for buttons */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+div#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Adds space between buttons */
+  align-items: flex-start; /* Aligns buttons to the left */
+
+}
