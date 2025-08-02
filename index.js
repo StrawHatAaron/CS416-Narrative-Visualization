@@ -168,6 +168,7 @@ async function main() {
         }
     }
 
+    
     // Button interaction
     d3.selectAll("#controls button").on("click", function() {
         d3.selectAll("button").classed("active", false);
