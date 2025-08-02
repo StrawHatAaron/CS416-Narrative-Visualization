@@ -27,7 +27,7 @@ async function fetchDomesticLightWeightTruckSalesData() {
 async function main() {
     // Declare the chart dimensions and margins.
     const width = 928;
-    const height = 500;
+    const height = 525;
     const marginTop = 20;
     const marginRight = 30;
     const marginBottom = 30;
@@ -39,6 +39,9 @@ async function main() {
                     .attr("height", height)
                     .attr("viewBox", [0, 0, width, height])
                     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+    const h2 = d3.select("h2")
+        .style("text-align", "center");
 
     // Declare a variable to hold data for Domestic Auto Production (DAUPSA)
     const domesticAutoData = await fetchDomesticAutoData();
@@ -89,20 +92,14 @@ async function main() {
             .attr("stroke-width", 1.5)
             .attr("d", line(domesticAutoData));
         // Add a title to the chart.
-        svg.append("text")
-            .attr("x", width / 2)
-            .attr("y", marginTop)
-            .attr("text-anchor", "middle")
-            .attr("font-size", "1.5em")
-            .text("Domestic Auto Production (DAUPSA) from 1993 to 2025"); 
+        h2.text("Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)"); 
     }
 
     function drawChartSales() {
-        console.log(domesticAutoSalesData);
         // Declare the x (horizontal position) scale.
         const x = d3.scaleUtc(d3.extent(domesticAutoSalesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
         // Declare the y (vertical position) scale.
-        const y = d3.scaleLinear([0, 600], [height - marginBottom, marginTop]);
+        const y = d3.scaleLinear([50, 1100], [height - marginBottom, marginTop]);
         // // Add the x-axis.
         svg.append("g")
             .attr("transform", `translate(0,${height - marginBottom})`)
@@ -122,22 +119,31 @@ async function main() {
                 .attr("text-anchor", "start")
                 .text("Thousands of Units"));
         // // Declare the line generator.
-        const line = d3.line()
+        const lineAuto = d3.line()
             .x(d => x(new Date(d.observation_date)))
             .y(d => y(Number(d.DAUTONSA)));
-        // Append a path for the line.
+        // Append a path for the line of domesticAutoSalesData
         svg.append("path")
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
-            .attr("d", line(domesticAutoSalesData));
+            .attr("d", lineAuto (domesticAutoSalesData));
+        // Append a path for the line of domesticLightWeightTruckSalesData
+        const lineTruck = d3.line()
+            .x(d => x(new Date(d.observation_date)))
+            .y(d => y(Number(d.DLTRUCKSNSA)));
+        // Append a path for the line of domesticLightWeightTruckSalesData
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "coral")
+            .attr("stroke-width", 1.5)
+            .attr("d", lineTruck(domesticLightWeightTruckSalesData));
+        
+        
+        
         // Add a title to the chart.
-        svg.append("text")
-            .attr("x", width / 2)
-            .attr("y", marginTop)
-            .attr("text-anchor", "middle")
-            .attr("font-size", "1.5em")
-            .text("Motor Vehicle Retail Sales: Domestic Autos (DAUTONSA) from 1993 to 2025");
+        h2.text("Motor Vehicle Retail Sales: Domestic Autos (DAUTONSA) and Light Weight Trucks (DLTRUCKSNSA) from 1967 to 2025 (Not Seasonally Adjusted)");
+        
     }
 
     // Update the SVG based on the selected storyline
@@ -145,18 +151,15 @@ async function main() {
         clearSVG();
         switch (type) {
         case "one":
-            drawChartDAUPSA();
-            break;
-
-        case "two":
             drawChartSales();
             break;
 
+        case "two":
+            drawChartDAUPSA();
+            break;
+
         case "three":
-            svg.append("line")
-                .attr("x1", 50).attr("y1", 150)
-                .attr("x2", 250).attr("y2", 50)
-                .attr("stroke", "green").attr("stroke-width", 4);
+            drawChartSales();
             break;
 
         case "four-daupsa":
