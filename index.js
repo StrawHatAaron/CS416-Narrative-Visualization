@@ -55,6 +55,72 @@ async function main() {
     // Clear the SVG container.
     function clearSVG() {
         svg.selectAll("*").remove();
+        h2.select("*").remove();
+    }
+
+    function drawGraphBounds(x, y) {
+        // Add the X-axis.
+        svg.append("g")
+            .attr("transform", `translate(0,${height - marginBottom})`)
+            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+        // Y-Axis Setup with Gridlines and Labe
+        svg.append("g")
+            .attr("transform", `translate(${marginLeft},0)`)
+            .call(d3.axisLeft(y).ticks(height / 20))
+            .call(g => g.select(".domain").remove())
+            .call(g => g.selectAll(".tick line").clone()
+                .attr("x2", width - marginLeft - marginRight)
+                .attr("stroke-opacity", 0.1))
+            .call(g => g.append("text")
+                .attr("x", -marginLeft)
+                .attr("y", 10)
+                .attr("fill", "currentColor")
+                .attr("text-anchor", "start")
+                .text("Thousands of Units"));
+    }
+
+    // Function to draw a line and add points with tooltips.
+    function drawLineAddPoints(data, x, y, color, fieldName) {
+        // Create a tooltip for displaying data on hover.
+        const tooltip = d3.select("body").append("div")
+                        .attr("class", "tooltip")
+                        .style("position", "absolute")
+                        .style("background", color)
+                        .style("padding", "6px")
+                        .style("border", "1px solid #ccc")
+                        .style("border-radius", "4px")
+                        .style("pointer-events", "none")
+                        .style("opacity", 0);
+        // Declare the line generator.
+        const line = d3.line()
+            .x(d => x(new Date(d.observation_date)))
+            .y(d => y(Number(d[fieldName])));
+        // Append a path for the line.
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", color)
+            .attr("stroke-width", 1.5)
+            .attr("d", line(data));
+        // Add points of tooltip data
+        svg.selectAll(".dot" + fieldName) 
+            .data(data)
+            .enter().append("circle")
+            .attr("class", "dot" + fieldName)
+            .attr("cx", d => x(new Date(d.observation_date)))
+            .attr("cy", d => y(Number(d[fieldName])))
+            .attr("r", 4)
+            .attr("fill", color)
+            .attr("opacity", 0.6)
+            .on("mouseover", (event, d) => {
+                tooltip.transition().duration(200).style("opacity", 0.9);
+                tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
+                            `<strong>Thousands of Units:</strong> ${d[fieldName]}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.transition().duration(500).style("opacity", 0);
+            });
     }
 
     function drawChartDAUPSA() {
@@ -63,87 +129,28 @@ async function main() {
         const x = d3.scaleUtc(d3.extent(domesticAutoData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
         // Declare the y (vertical position) scale.
         const y = d3.scaleLinear([0, 600], [height - marginBottom, marginTop]);
-        // // Add the x-axis.
-        svg.append("g")
-            .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
-        // // Add the y-axis, remove the domain line, add grid lines and a label.
-        svg.append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y).ticks(height / 20))
-            .call(g => g.select(".domain").remove())
-            .call(g => g.selectAll(".tick line").clone()
-                .attr("x2", width - marginLeft - marginRight)
-                .attr("stroke-opacity", 0.1))
-            .call(g => g.append("text")
-                .attr("x", -marginLeft)
-                .attr("y", 10)
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "start")
-                .text("Thousands of Units"));
-        // // Declare the line generator.
-        const line = d3.line()
-            .x(d => x(new Date(d.observation_date)))
-            .y(d => y(Number(d.DAUPSA)));
-        // Append a path for the line.
-        svg.append("path")
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
-            .attr("d", line(domesticAutoData));
-        // Add a title to the chart.
+        // Draw the graph bounds.
+        drawGraphBounds(x, y)
+        // Draw the line and points for Domestic Auto Production (DAUPSA).          
+        drawLineAddPoints(domesticAutoData, x, y, "steelblue", "DAUPSA");
+        // Add the title to the chart.
         h2.text("Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)"); 
     }
 
     function drawChartSales() {
         // Declare the x (horizontal position) scale.
-        const x = d3.scaleUtc(d3.extent(domesticAutoSalesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
+        const x_auto = d3.scaleUtc(d3.extent(domesticAutoSalesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
+        const x_truck = d3.scaleUtc(d3.extent(domesticLightWeightTruckSalesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
         // Declare the y (vertical position) scale.
         const y = d3.scaleLinear([50, 1100], [height - marginBottom, marginTop]);
-        // // Add the x-axis.
-        svg.append("g")
-            .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
-        // // Add the y-axis, remove the domain line, add grid lines and a label.
-        svg.append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y).ticks(height / 20))
-            .call(g => g.select(".domain").remove())
-            .call(g => g.selectAll(".tick line").clone()
-                .attr("x2", width - marginLeft - marginRight)
-                .attr("stroke-opacity", 0.1))
-            .call(g => g.append("text")
-                .attr("x", -marginLeft)
-                .attr("y", 10)
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "start")
-                .text("Thousands of Units"));
-        // // Declare the line generator.
-        const lineAuto = d3.line()
-            .x(d => x(new Date(d.observation_date)))
-            .y(d => y(Number(d.DAUTONSA)));
-        // Append a path for the line of domesticAutoSalesData
-        svg.append("path")
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
-            .attr("d", lineAuto (domesticAutoSalesData));
-        // Append a path for the line of domesticLightWeightTruckSalesData
-        const lineTruck = d3.line()
-            .x(d => x(new Date(d.observation_date)))
-            .y(d => y(Number(d.DLTRUCKSNSA)));
-        // Append a path for the line of domesticLightWeightTruckSalesData
-        svg.append("path")
-            .attr("fill", "none")
-            .attr("stroke", "coral")
-            .attr("stroke-width", 1.5)
-            .attr("d", lineTruck(domesticLightWeightTruckSalesData));
-        
-        
-        
+        // Draw the graph bounds.
+        drawGraphBounds(x_auto, y);
+        // Draw the line and points for Domestic Auto Sales (DAUTONSA).
+        drawLineAddPoints(domesticAutoSalesData, x_auto, y, "steelblue", "DAUTONSA");
+        // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
+        drawLineAddPoints(domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA");
         // Add a title to the chart.
-        h2.text("Motor Vehicle Retail Sales: Domestic Autos (DAUTONSA) and Light Weight Trucks (DLTRUCKSNSA) from 1967 to 2025 (Not Seasonally Adjusted)");
-        
+        h2.text("Motor Vehicle Retail Sales: Domestic Autos (DAUTONSA) and Light Weight Trucks (DLTRUCKSNSA) from 1967 to 2025 (Not Seasonally Adjusted)"); 
     }
 
     // Update the SVG based on the selected storyline
@@ -153,22 +160,18 @@ async function main() {
         case "one":
             drawChartSales();
             break;
-
         case "two":
             drawChartDAUPSA();
             break;
-
         case "three":
             drawChartSales();
             break;
-
         case "four-daupsa":
             drawChartDAUPSA();
             break;
         }
     }
 
-    
     // Button interaction
     d3.selectAll("#controls button").on("click", function() {
         d3.selectAll("button").classed("active", false);
@@ -183,15 +186,3 @@ async function main() {
 }
 
 main();
-
-
-
-
-
-
-
-
-      
-
-
-
