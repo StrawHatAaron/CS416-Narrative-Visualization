@@ -50,20 +50,12 @@ async function main() {
 
     // Create the SVG containers.
     const svg_cpi = d3.select("svg#graph-cpi")
-                    .attr("width", 0)
-                    .attr("height", 0)
-                    .attr("viewBox", [0, 0, 0, 0])
-                    .attr("style", "max-width:0; height: 0; height: 0;");
-    const svg_sales = d3.select("svg#graph-sales")
-                    .attr("width", 0)
-                    .attr("height", 0)
-                    .attr("viewBox", [0, 0, 0, 0])
-                    .attr("style", "max-width:0; height: 0; height: 0;");
-    const svg_production = d3.select("svg#graph-production")
-                    .attr("width", 0)
-                    .attr("height", 0)
-                    .attr("viewBox", [0, 0, 0, 0])
-                    .attr("style", "max-width: 0; height: 0; height: 0;");
+                .attr("width", width)
+                .attr("height", height)
+                .attr("viewBox", [0, 0, width, height])
+                .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+    const svg_sales = d3.select("svg#graph-sales").style("display", "none");
+    const svg_production = d3.select("svg#graph-production").style("display", "none");
 
     const svg_legend = d3.select("svg#legend")
         .attr("width", 200)
@@ -94,11 +86,10 @@ async function main() {
         svg_production.selectAll("*").remove();
         svg_legend.selectAll("*").remove();
         h2.select("*").remove();
-        svg_cpi = d3.select("svg#graph-sales");
-        svg_cpi.attr("width", width)
-                .attr("height", height)
-                .attr("viewBox", [0, 0, width, height])
-                .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        
+        svg_cpi.style("display", "none");
+        svg_sales.style("display", "none");
+        svg_production.style("display", "none");
     }
 
     function drawGraphBounds(svg, x, y, label) {
@@ -169,7 +160,7 @@ async function main() {
 
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
     function drawChartCPI() {
-        svg_cpi.attr("width", width)
+        svg_cpi.select("svg#graph-cpi").attr("width", width)
                 .attr("height", height)
                 .attr("viewBox", [0, 0, width, height])
                 .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
