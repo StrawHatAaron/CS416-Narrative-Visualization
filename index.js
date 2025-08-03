@@ -100,8 +100,8 @@ async function main() {
         svg_cpi.style("display", "none");
         svg_sales.style("display", "none");
         svg_production.style("display", "none");
-        svg_legend_cpi.style("display", "none");
-        svg_legend_sales.style("display", "none");
+        // svg_legend_cpi.style("display", "none");
+        // svg_legend_sales.style("display", "none");
     }
 
     function drawGraphBounds(svg, x, y, label) {
@@ -219,22 +219,44 @@ async function main() {
 
 
         // Add a legend to differentiate between the two lines CUSR0000SETA01 and CPIAUCSL.
-        svg_legend_cpi.append("g").attr("transform", "translate(0,0)")
-                        .attr("width", 200)
-                        .attr("height", 100)
-                        .attr("viewBox", [0, 0, 200, 100]).style("display", "inline")    ; 
+        // svg_legend_cpi.append("g").attr("transform", "translate(0,0)")
+        //                 .attr("width", 200)
+        //                 .attr("height", 100)
+        //                 .attr("viewBox", [0, 0, 200, 100]).style("display", "inline")    ; 
 
-        // Create legend items for the two lines.
-        const items = [ { color: "steelblue", label: "New Vehicles in U.S. City Average (CUSR0000SETA01)" },
-                        { color: "coral", label: "All Items in U.S. City Average (CPIAUCSL)" }];
+        // // Create legend items for the two lines.
+        // const items = [ { color: "steelblue", label: "New Vehicles in U.S. City Average (CUSR0000SETA01)" },
+        //                 { color: "coral", label: "All Items in U.S. City Average (CPIAUCSL)" }];
+        // items.forEach((item, i) => {
+        //     const y = i * 20;
+        //     svg_legend_cpi.append("circle")
+        //         .attr("cx", 0)
+        //         .attr("cy", y)
+        //         .attr("r", 6)
+        //         .style("fill", item.color);
+        //     svg_legend_cpi.append("text")
+        //         .attr("x", 12)
+        //         .attr("y", y + 4)
+        //         .text(item.label)
+        //         .style("font-size", "12px")
+        //         .attr("alignment-baseline", "middle");
+        // });
+
+
+        // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
+        const legend = svg_legend_cpi.append("g")
+            .attr("transform", "translate(20,20)");
+        const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
+                        { color: "coral", label: "Light Weight Trucks (DLTRUCKSNSA)" }];
+
         items.forEach((item, i) => {
             const y = i * 20;
-            svg_legend_cpi.append("circle")
+            legend.append("circle")
                 .attr("cx", 0)
                 .attr("cy", y)
                 .attr("r", 6)
                 .style("fill", item.color);
-            svg_legend_cpi.append("text")
+            legend.append("text")
                 .attr("x", 12)
                 .attr("y", y + 4)
                 .text(item.label)
@@ -266,24 +288,24 @@ async function main() {
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
         drawLineAddPoints(svg_sales, domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA", "Thousands of Units");
         // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
-        const legend = svg_legend.append("g")
-            .attr("transform", "translate(20,20)");
-        const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
-                        { color: "coral", label: "Light Weight Trucks (DLTRUCKSNSA)" }];
-        items.forEach((item, i) => {
-            const y = i * 20;
-            legend.append("circle")
-                .attr("cx", 0)
-                .attr("cy", y)
-                .attr("r", 6)
-                .style("fill", item.color);
-            legend.append("text")
-                .attr("x", 12)
-                .attr("y", y + 4)
-                .text(item.label)
-                .style("font-size", "12px")
-                .attr("alignment-baseline", "middle");
-        });
+        // const legend = svg_legend.append("g")
+        //     .attr("transform", "translate(20,20)");
+        // const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
+        //                 { color: "coral", label: "Light Weight Trucks (DLTRUCKSNSA)" }];
+        // items.forEach((item, i) => {
+        //     const y = i * 20;
+        //     legend.append("circle")
+        //         .attr("cx", 0)
+        //         .attr("cy", y)
+        //         .attr("r", 6)
+        //         .style("fill", item.color);
+        //     legend.append("text")
+        //         .attr("x", 12)
+        //         .attr("y", y + 4)
+        //         .text(item.label)
+        //         .style("font-size", "12px")
+        //         .attr("alignment-baseline", "middle");
+        // });
         // Add a title to the chart.
         h2.text("Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)"); 
     }
