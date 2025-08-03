@@ -47,7 +47,11 @@ async function main() {
     const marginRight = 30;
     const marginBottom = 30;
     const marginLeft = 40;
-
+    // Title containers for the graphs.
+    const h2_cpi = d3.select("h2#h2-title-cpi")
+        .style("text-align", "center");
+    const h2_sales = d3.select("h2#h2-title-sales").style("display", "none");
+    const h2_production = d3.select("h2#h2-title-production").style("display", "none");
     // Create the SVG containers for all three graphs.
     const svg_cpi = d3.select("svg#graph-cpi")
                 .attr("width", width)
@@ -56,54 +60,90 @@ async function main() {
                 .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
     const svg_sales = d3.select("svg#graph-sales").style("display", "none");
     const svg_production = d3.select("svg#graph-production").style("display", "none");
-
-
-
     // Create the SVG container for the legends CPI and Sales.
     const svg_legend_cpi = d3.select("svg#legend-cpi")
-        .attr("width", 200)
+        .attr("width", 350)
         .attr("height", 100)
-        .attr("viewBox", [0, 0, 200, 100]);  
+        .attr("viewBox", [0, 0, 350, 100]);
     const svg_legend_sales = d3.select("svg#legend-sales").style("display", "none");
-
-
-
-    // Need to create heading for the graphs too
-    const h2 = d3.select("h2")
-        .style("text-align", "center");
-
-
-
-    // declare variables for Consumer Price Indexes for All Urban Consumers
+    // Declare variables for CPI graph (CUSR0000SETA01, CPIAUCSL), Sales graph (DAUTONSA, DLTRUCKSNSA), Domestic Auto Production graph (DAUPSA)
     const cpiAllItemsData = await fetchCPIData();
-    // Declare a variable to hold data for Consumer Price Indexes for New Vehicles.
     const cpiNewVehiclesData = await fetchCPIDataNewVehicles();
-
-    // Declare a variable to hold data for Motor Vehicle Retail Sales: Domestic Autos (DAUTONSA).
     const domesticAutoSalesData = await fetchDomesticAutoSalesData();
-    // Declare a variable to hold data for Motor Vehicle Retail Sales: Domestic Light Weight Trucks (DLTRUCKSNSA)
     const domesticLightWeightTruckSalesData = await fetchDomesticLightWeightTruckSalesData();
-
-    // Declare a variable to hold data for Domestic Auto Production (DAUPSA)
     const domesticAutoData = await fetchDomesticAutoData();
 
 
     // Clear the SVG container.
     function clearSVG() {
+        // Clear the SVG graphs and legends.
         svg_cpi.selectAll("*").remove();
         svg_sales.selectAll("*").remove();
         svg_production.selectAll("*").remove();
         svg_legend_cpi.selectAll("*").remove();
         svg_legend_sales.selectAll("*").remove();
-        h2.select("*").remove();
-        
+        h2_cpi.select("*").remove();
+        h2_sales.select("*").remove();
+        h2_production.select("*").remove();
+        // Hide the SVG graphs and legends.
         svg_cpi.style("display", "none");
         svg_sales.style("display", "none");
         svg_production.style("display", "none");
         svg_legend_cpi.style("display", "none");
         svg_legend_sales.style("display", "none");
+        h2_cpi.style("display", "none");
+        h2_sales.style("display", "none");
+        h2_production.style("display", "none");
     }
 
+
+    // Function to fill the titles for graphs
+    function fillTitle(h2, title) {
+        h2.text(title);
+        h2.style("display", "inline");
+
+    }
+
+    // Function to show and shape the SVG graphs.
+    function showAndShapeSvgGragh(svg) {
+        svg.attr("width", width)
+            .attr("height", height)
+            .attr("viewBox", [0, 0, width, height])
+            .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        svg.style("display", "inline");
+    }
+
+    // Function to show and shape the SVG legend for CPI and Sales graphs.
+    function showShapeAndLabelSvgLegend(svg, labels) {
+        // show and shape the SVG legend for CPI and Sales graphs.
+        svg.attr("width", 350)
+            .attr("height", 100)
+            .attr("viewBox", [0, 0, 350, 100])
+            .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        svg.style("display", "inline");
+        // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.  
+        const legend = svg.append("g")
+            .attr("transform", "translate(20,20)");
+        const items = [ { color: "steelblue", label: labels[0] },
+                        { color: "coral", label: labels[1] }];
+        // Loop through the items and append circles and text to the legend.
+        items.forEach((item, i) => {
+            const y = i * 20;
+            legend.append("circle")
+                .attr("cx", 0)
+                .attr("cy", y)
+                .attr("r", 6)
+                .style("fill", item.color);
+            legend.append("text")
+                .attr("x", 12)
+                .attr("y", y + 4)
+                .text(item.label)
+                .style("font-size", "12px")
+                .attr("alignment-baseline", "middle");
+        });
+    }
+
+    // Function to draw the graph bounds with X and Y axes.
     function drawGraphBounds(svg, x, y, label) {
         // Add the X-axis.
         svg.append("g")
@@ -203,9 +243,14 @@ async function main() {
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
     
     function drawChartCPI() {
-        svg_cpi.attr("height", height)
-                .attr("viewBox", [0, 0, width, height])
-                .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        // Add the title to the chart.
+        fillTitle(h2_cpi, "Consumer Price Indexes for All Urban Consumers from 1953 to 2025 (Seasonally Adjusted)");
+        // Show and shape the SVG graph for CPI.
+        showAndShapeSvgGragh(svg_cpi);
+        // Add a legend to differentiate between the two lines CUSR0000SETA01 and CPIAUCSL.
+        showShapeAndLabelSvgLegend(svg_legend_cpi, 
+            ["New Vehicles in U.S. City Average (CUSR0000SETA01)",
+            "All Items in U.S. City Average (CPIAUCSL)"]);
         // Declare the x (horizontal position) scale for New Vehicles.
         const x_auto_CPI = d3.scaleUtc(d3.extent(cpiNewVehiclesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
         const x_CPI = d3.scaleUtc(d3.extent(cpiAllItemsData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
@@ -220,66 +265,21 @@ async function main() {
 
 
 
-        // Add a legend to differentiate between the two lines CUSR0000SETA01 and CPIAUCSL.
-        svg_legend_cpi.append("g").attr("transform", "translate(0,0)")
-                        .attr("width", 200)
-                        .attr("height", 100)
-                        .attr("viewBox", [0, 0, 200, 100]).style("display", "inline")    ; 
-        svg_legend_cpi.style("display", "inline");
-        
-        // // Create legend items for the two lines.
-        // const items = [ { color: "steelblue", label: "New Vehicles in U.S. City Average (CUSR0000SETA01)" },
-        //                 { color: "coral", label: "All Items in U.S. City Average (CPIAUCSL)" }];
-        // items.forEach((item, i) => {
-        //     const y = i * 20;
-        //     svg_legend_cpi.append("circle")
-        //         .attr("cx", 0)
-        //         .attr("cy", y)
-        //         .attr("r", 6)
-        //         .style("fill", item.color);
-        //     svg_legend_cpi.append("text")
-        //         .attr("x", 12)
-        //         .attr("y", y + 4)
-        //         .text(item.label)
-        //         .style("font-size", "12px")
-        //         .attr("alignment-baseline", "middle");
-        // });
-
-
-        // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
-  
-        const legend = svg_legend_cpi.append("g")
-            .attr("transform", "translate(20,20)");
-        const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
-                        { color: "coral", label: "Light Weight Trucks (DLTRUCKSNSA)" }];
-
-        items.forEach((item, i) => {
-            const y = i * 20;
-            legend.append("circle")
-                .attr("cx", 0)
-                .attr("cy", y)
-                .attr("r", 6)
-                .style("fill", item.color);
-            legend.append("text")
-                .attr("x", 12)
-                .attr("y", y + 4)
-                .text(item.label)
-                .style("font-size", "12px")
-                .attr("alignment-baseline", "middle");
-        });
-
 
         // Add a title to the chart.
-        h2.text("Consumer Price Indexes for All Urban Consumers from 1953 to 2025 (Seasonally Adjusted)");
+        // h2.text("Consumer Price Indexes for All Urban Consumers from 1953 to 2025 (Seasonally Adjusted)");
     }
 
     // Function to draw the chart for Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks.
     function drawChartSales() {
-            
-        svg_sales.attr("width", width)
-                .attr("height", height)
-                .attr("viewBox", [0, 0, width, height])
-                .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        // Add the title to the chart.
+        fillTitle(h2_sales, "Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)");
+        // Show and shape the SVG graph for Sales.
+        showAndShapeSvgGragh(svg_sales);    
+        // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
+        showShapeAndLabelSvgLegend(svg_legend_sales, 
+            ["Domestic Autos (DAUTONSA)",
+            "Domestic Light Weight Trucks (DLTRUCKSNSA)"]);
         // Declare the x (horizontal position) scale.
         const x_auto = d3.scaleUtc(d3.extent(domesticAutoSalesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
         const x_truck = d3.scaleUtc(d3.extent(domesticLightWeightTruckSalesData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
@@ -291,35 +291,18 @@ async function main() {
         drawLineAddPoints(svg_sales, domesticAutoSalesData, x_auto, y, "steelblue", "DAUTONSA", "Thousands of Units");
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
         drawLineAddPoints(svg_sales, domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA", "Thousands of Units");
-        // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
-        // const legend = svg_legend.append("g")
-        //     .attr("transform", "translate(20,20)");
-        // const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
-        //                 { color: "coral", label: "Light Weight Trucks (DLTRUCKSNSA)" }];
-        // items.forEach((item, i) => {
-        //     const y = i * 20;
-        //     legend.append("circle")
-        //         .attr("cx", 0)
-        //         .attr("cy", y)
-        //         .attr("r", 6)
-        //         .style("fill", item.color);
-        //     legend.append("text")
-        //         .attr("x", 12)
-        //         .attr("y", y + 4)
-        //         .text(item.label)
-        //         .style("font-size", "12px")
-        //         .attr("alignment-baseline", "middle");
-        // });
+
+
         // Add a title to the chart.
-        h2.text("Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)"); 
+        // h2.text("Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)"); 
     }
 
     // Function to draw the chart for Domestic Auto Production (DAUPSA).
     function drawChartDAUPSA() {
-        svg_production.attr("width", width)
-                        .attr("height", height)
-                        .attr("viewBox", [0, 0, width, height])
-                        .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+        // Add the title to the chart.
+        fillTitle(h2_production, "Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)");
+        // Show and shape the SVG graph for Domestic Auto Production.
+        showAndShapeSvgGragh(svg_production);
         // Declare the x (horizontal position) scale.
         const x = d3.scaleUtc(d3.extent(domesticAutoData, d => new Date(d.observation_date)), [marginLeft, width - marginRight]);
         // Declare the y (vertical position) scale.
@@ -337,7 +320,7 @@ async function main() {
         //     });
         // svg.call(zoom);
         // Add the title to the chart.
-        h2.text("Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)"); 
+        // h2.text("Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)"); 
     }
 
 

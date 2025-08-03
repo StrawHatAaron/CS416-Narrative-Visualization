@@ -85,10 +85,10 @@ div#legend-container {
   /* height: 10vh; */
 }
 
-div#description {
-  /* margin-top: 20px;
-  width: 80%;
-  text-align: center;
-  font-size: 1.2em;
-  color: #333; */
+div#top-level-graph-container {
+  margin-top: 5vh;
+}
+
+div#top-level-graph-object {
+  padding-top: 6vh;
 }
