@@ -48,7 +48,7 @@ async function main() {
     const marginBottom = 30;
     const marginLeft = 40;
 
-    // Create the SVG containers.
+    // Create the SVG containers for all three graphs.
     const svg_cpi = d3.select("svg#graph-cpi")
                 .attr("width", width)
                 .attr("height", height)
@@ -57,13 +57,22 @@ async function main() {
     const svg_sales = d3.select("svg#graph-sales").style("display", "none");
     const svg_production = d3.select("svg#graph-production").style("display", "none");
 
-    const svg_legend = d3.select("svg#legend")
+
+
+    // Create the SVG container for the legends CPI and Sales.
+    const svg_legend_cpi = d3.select("svg#legend-cpi")
         .attr("width", 200)
         .attr("height", 100)
         .attr("viewBox", [0, 0, 200, 100]);  
+    const svg_legend_sales = d3.select("svg#legend-sales").style("display", "none");
 
+
+
+    // Need to create heading for the graphs too
     const h2 = d3.select("h2")
         .style("text-align", "center");
+
+
 
     // declare variables for Consumer Price Indexes for All Urban Consumers
     const cpiAllItemsData = await fetchCPIData();
@@ -84,12 +93,15 @@ async function main() {
         svg_cpi.selectAll("*").remove();
         svg_sales.selectAll("*").remove();
         svg_production.selectAll("*").remove();
-        svg_legend.selectAll("*").remove();
+        svg_legend_cpi.selectAll("*").remove();
+        svg_legend_sales.selectAll("*").remove();
         h2.select("*").remove();
         
         svg_cpi.style("display", "none");
         svg_sales.style("display", "none");
         svg_production.style("display", "none");
+        svg_legend_cpi.style("display", "none");
+        svg_legend_sales.style("display", "none");
     }
 
     function drawGraphBounds(svg, x, y, label) {
@@ -158,10 +170,38 @@ async function main() {
     }
 
 
+    // function drawGraphLegend(svg, items) {
+    //     const legend = svg.append("g")
+    //         .attr("transform", "translate(20,20)");
+    //     items.forEach((item, i) => {
+    //         const y = i * 20;
+    //         legend.append("circle")
+    //             .attr("cx", 0)
+    //             .attr("cy", y)
+    //             .attr("r", 6)
+    //             .style("fill", item.color);
+    //         legend.append("text")
+    //             .attr("x", 12)
+    //             .attr("y", y + 4)
+    //             .text(item.label)
+    //             .style("font-size", "12px")
+    //             .attr("alignment-baseline", "middle");
+    //     });
+    // }
+
+    // function drawGraphHeader(svg, title) {
+    //     svg.append("text")
+    //         .attr("x", width / 2)
+    //         .attr("y", marginTop - 10)
+    //         .text(title)
+    //         .style("font-size", "16px")
+    //         .style("font-weight", "bold")
+    //         .attr("text-anchor", "middle");
+    // }
+
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
     function drawChartCPI() {
-        svg_cpi.select("svg#graph-cpi").attr("width", width)
-                .attr("height", height)
+        svg_cpi.attr("height", height)
                 .attr("viewBox", [0, 0, width, height])
                 .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
         // Declare the x (horizontal position) scale for New Vehicles.
@@ -175,25 +215,35 @@ async function main() {
         drawLineAddPoints(svg_cpi, cpiNewVehiclesData, x_auto_CPI, y, "steelblue", "CUSR0000SETA01", "CPI Index 1982-1984=100");
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
         drawLineAddPoints(svg_cpi, cpiAllItemsData, x_CPI, y, "coral", "CPIAUCSL", "CPI Index 1982-1984=100");
+
+
+
         // Add a legend to differentiate between the two lines CUSR0000SETA01 and CPIAUCSL.
-        const legend = svg_legend.append("g")
-            .attr("transform", "translate(20,20)");
+        svg_legend_cpi.append("g").attr("transform", "translate(0,0)")
+                        .attr("width", 200)
+                        .attr("height", 100)
+                        .attr("viewBox", [0, 0, 200, 100]).style("display", "inline")    ; 
+
+        // Create legend items for the two lines.
         const items = [ { color: "steelblue", label: "New Vehicles in U.S. City Average (CUSR0000SETA01)" },
                         { color: "coral", label: "All Items in U.S. City Average (CPIAUCSL)" }];
         items.forEach((item, i) => {
             const y = i * 20;
-            legend.append("circle")
+            svg_legend_cpi.append("circle")
                 .attr("cx", 0)
                 .attr("cy", y)
                 .attr("r", 6)
                 .style("fill", item.color);
-            legend.append("text")
+            svg_legend_cpi.append("text")
                 .attr("x", 12)
                 .attr("y", y + 4)
                 .text(item.label)
                 .style("font-size", "12px")
                 .attr("alignment-baseline", "middle");
         });
+
+
+        // Add a title to the chart.
         h2.text("Consumer Price Indexes for All Urban Consumers from 1953 to 2025 (Seasonally Adjusted)");
     }
 

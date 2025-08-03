@@ -12,11 +12,8 @@
       <h1>Economic Analysis of USA's Domestic Autos</h1>
     </div>
     <div id="chart-area">
-      <div id="description">
-        <h2><!-- empty heading managed by index.js --></h2>
-      </div>
-      <div id="svg-buttons-container">
 
+      <div id="svg-buttons-container">
         <div id="controls">
           <button data-type="one">1</button>
           <button data-type="two">2</button>
@@ -29,9 +26,12 @@
         <div id="svg-container">
           
           <div>
-            <div id="label-container">
+            <div id="description">
+              <h2><!-- empty heading managed by index.js --></h2>
+            </div>
+            <div id="legend-container">
             <label id="svg-title">
-              <svg id="legend">
+              <svg id="legend-cpi">
                 <!-- sometimes a legend will be shown by index.js -->
               </svg>
             </label>
@@ -40,16 +40,33 @@
               <!-- empty svg canvas managed by index.js -->
             </svg>
           </div>
+
           <div>
-          <svg id="graph-sales">
-            <!-- empty svg canvas managed by index.js -->
-          </svg>
+            <div id="description">
+              <h2><!-- empty heading managed by index.js --></h2>
+            </div>
+            <div id="legend-container">
+            <label id="svg-title">
+              <svg id="legend-sales">
+                <!-- sometimes a legend will be shown by index.js -->
+              </svg>
+            </label>
+            </div>
+            <svg id="graph-sales">
+              <!-- empty svg canvas managed by index.js -->
+            </svg>
           </div>
+
           <div>
-          <svg id="graph-production">
-            <!-- empty svg canvas managed by index.js -->
-          </svg>
+            <div id="description">
+              <h2><!-- empty heading managed by index.js --></h2>
+            </div>
+            <svg id="graph-production">
+              <!-- empty svg canvas managed by index.js -->
+            </svg>
           </div>
+
+          
         </div> 
       </div>
     </div>
