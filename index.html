@@ -16,28 +16,45 @@
         <h2><!-- empty heading managed by index.js --></h2>
       </div>
       <div id="svg-buttons-container">
-        <div id="label-container">
-          <label id="svg-title">
-            <svg id="legend">
-              <!-- sometimes a legend will be shown by index.js -->
-            </svg>
-          </label>
-        </div>
-        <div id="svg-container">
-          <svg id="chart">
-            <!-- empty svg canvas managed by index.js -->
-          </svg>
-        </div>
+
         <div id="controls">
           <button data-type="one">1</button>
           <button data-type="two">2</button>
           <button data-type="three">3</button>
-          <button data-type="four-daupsa">DAUPSA</button>
+          <button data-type="summary">DAUPSA</button>
         </div>
-      </div>
+
+
+
+        <div id="svg-container">
+          
+          <div>
+            <div id="label-container">
+            <label id="svg-title">
+              <svg id="legend">
+                <!-- sometimes a legend will be shown by index.js -->
+              </svg>
+            </label>
+            </div>
+            <svg id="graph-cpi">
+              <!-- empty svg canvas managed by index.js -->
+            </svg>
+          </div>
+          <div>
+          <svg id="graph-sales">
+            <!-- empty svg canvas managed by index.js -->
+          </svg>
+          </div>
+          <div>
+          <svg id="graph-production">
+            <!-- empty svg canvas managed by index.js -->
+          </svg>
+          </div>
+        </div> 
       </div>
     </div>
-  </div>    
+  </div>
+    
 </body>
 <script src="index.js"></script>    
 </html>
