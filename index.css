@@ -82,6 +82,13 @@ div#svg-container {
 div#legend-container {
   margin-top: 0px;
   width: 100%;
-  height: 10vh;
+  /* height: 10vh; */
 }
 
+div#description {
+  /* margin-top: 20px;
+  width: 80%;
+  text-align: center;
+  font-size: 1.2em;
+  color: #333; */
+}

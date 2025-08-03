@@ -100,8 +100,8 @@ async function main() {
         svg_cpi.style("display", "none");
         svg_sales.style("display", "none");
         svg_production.style("display", "none");
-        // svg_legend_cpi.style("display", "none");
-        // svg_legend_sales.style("display", "none");
+        svg_legend_cpi.style("display", "none");
+        svg_legend_sales.style("display", "none");
     }
 
     function drawGraphBounds(svg, x, y, label) {
@@ -201,6 +201,7 @@ async function main() {
 
 
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
+    
     function drawChartCPI() {
         svg_cpi.attr("height", height)
                 .attr("viewBox", [0, 0, width, height])
@@ -220,11 +221,12 @@ async function main() {
 
 
         // Add a legend to differentiate between the two lines CUSR0000SETA01 and CPIAUCSL.
-        // svg_legend_cpi.append("g").attr("transform", "translate(0,0)")
-        //                 .attr("width", 200)
-        //                 .attr("height", 100)
-        //                 .attr("viewBox", [0, 0, 200, 100]).style("display", "inline")    ; 
-
+        svg_legend_cpi.append("g").attr("transform", "translate(0,0)")
+                        .attr("width", 200)
+                        .attr("height", 100)
+                        .attr("viewBox", [0, 0, 200, 100]).style("display", "inline")    ; 
+        svg_legend_cpi.style("display", "inline");
+        
         // // Create legend items for the two lines.
         // const items = [ { color: "steelblue", label: "New Vehicles in U.S. City Average (CUSR0000SETA01)" },
         //                 { color: "coral", label: "All Items in U.S. City Average (CPIAUCSL)" }];
@@ -245,6 +247,7 @@ async function main() {
 
 
         // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
+  
         const legend = svg_legend_cpi.append("g")
             .attr("transform", "translate(20,20)");
         const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
