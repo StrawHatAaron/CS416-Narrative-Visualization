@@ -47,6 +47,8 @@ async function main() {
     const marginRight = 30;
     const marginBottom = 30;
     const marginLeft = 40;
+    // Declare seperators for the graphs
+    const hr = d3.selectAll("hr#graph-seperator").style("display", "none"); 
     // Title containers for the graphs.
     const h2_cpi = d3.select("h2#h2-title-cpi")
         .style("text-align", "center");
@@ -94,6 +96,8 @@ async function main() {
         h2_cpi.style("display", "none");
         h2_sales.style("display", "none");
         h2_production.style("display", "none");
+        
+        hr.style("display", "none")
     }
 
 
@@ -101,7 +105,6 @@ async function main() {
     function fillTitle(h2, title) {
         h2.text(title);
         h2.style("display", "inline");
-
     }
 
     // Function to show and shape the SVG graphs.
@@ -167,16 +170,7 @@ async function main() {
 
     // Function to draw a line and add points with tooltips.
     function drawLineAddPoints(svg, data, x, y, color, fieldName, label) {
-        // Create a tooltip for displaying data on hover.
-        const tooltip = d3.select("body").append("div")
-                        .attr("class", "tooltip")
-                        .style("position", "absolute")
-                        .style("background", color)
-                        .style("padding", "6px")
-                        .style("border", "1px solid #ccc")
-                        .style("border-radius", "4px")
-                        .style("pointer-events", "none")
-                        .style("opacity", 0);
+        
         // Declare the line generator.
         const line = d3.line()
             .x(d => x(new Date(d.observation_date)))
@@ -187,57 +181,64 @@ async function main() {
             .attr("stroke", color)
             .attr("stroke-width", 1.5)
             .attr("d", line(data));
-        // Add points of tooltip data
-        svg.selectAll(".dot" + fieldName) 
-            .data(data)
-            .enter().append("circle")
-            .attr("class", "dot" + fieldName)
-            .attr("cx", d => x(new Date(d.observation_date)))
-            .attr("cy", d => y(Number(d[fieldName])))
-            .attr("r", 4)
-            .attr("fill", color)
-            .attr("opacity", 0.6)
-            .on("mouseover", (event, d) => {
-                tooltip.transition().duration(200).style("opacity", 0.9);
-                tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
-                            `<strong>${label}:</strong> ${d[fieldName]}`)
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 28) + "px");
-            })
-            .on("mouseout", () => {
-                tooltip.transition().duration(500).style("opacity", 0);
-            });
+
+        // Create a tooltip for displaying data on hover.
+        // const tooltip = d3.select("body").append("div")
+        //                 .attr("class", "tooltip")
+        //                 .style("position", "absolute")
+        //                 .style("background", color)
+        //                 .style("padding", "6px")
+        //                 .style("border", "1px solid #ccc")
+        //                 .style("border-radius", "4px")
+        //                 .style("pointer-events", "none")
+        //                 .style("opacity", 0);
+        // // Add points of tooltip data
+        // svg.selectAll(".dot" + fieldName) 
+        //     .data(data)
+        //     .enter().append("circle")
+        //     .attr("class", "dot" + fieldName)
+        //     .attr("cx", d => x(new Date(d.observation_date)))
+        //     .attr("cy", d => y(Number(d[fieldName])))
+        //     .attr("r", 4)
+        //     .attr("fill", color)
+        //     .attr("opacity", 0.6)
+        //     .on("mouseover", (event, d) => {
+        //         tooltip.transition().duration(200).style("opacity", 0.9);
+        //         tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
+        //                     `<strong>${label}:</strong> ${d[fieldName]}`)
+        //         .style("left", (event.pageX + 10) + "px")
+        //         .style("top", (event.pageY - 28) + "px");
+        //     })
+        //     .on("mouseout", () => {
+        //         tooltip.transition().duration(500).style("opacity", 0);
+        //     });
     }
 
+    // Highlight the 1980s to show the CPI trends 
+    function showStoryCPI(){
+        // svg_cpi.selectAll("circle")
+        // .data(data)
+        // .enter()
+        // .append("circle")
+        // .attr("cx", d => xScale(d.x))
+        // .attr("cy", d => yScale(d.y))
+        // .attr("r", d => highlightCondition(d) ? 6 : 3)
+        // .attr("fill", d => highlightCondition(d) ? "red" : "gray");
 
-    // function drawGraphLegend(svg, items) {
-    //     const legend = svg.append("g")
-    //         .attr("transform", "translate(20,20)");
-    //     items.forEach((item, i) => {
-    //         const y = i * 20;
-    //         legend.append("circle")
-    //             .attr("cx", 0)
-    //             .attr("cy", y)
-    //             .attr("r", 6)
-    //             .style("fill", item.color);
-    //         legend.append("text")
-    //             .attr("x", 12)
-    //             .attr("y", y + 4)
-    //             .text(item.label)
-    //             .style("font-size", "12px")
-    //             .attr("alignment-baseline", "middle");
-    //     });
-    // }
+        const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
+        const highlightData = cpiNewVehiclesData.filter(d => d.x >= new Date("1980-01-01") && d.x <= new Date("1989-12-01"));
 
-    // function drawGraphHeader(svg, title) {
-    //     svg.append("text")
-    //         .attr("x", width / 2)
-    //         .attr("y", marginTop - 10)
-    //         .text(title)
-    //         .style("font-size", "16px")
-    //         .style("font-weight", "bold")
-    //         .attr("text-anchor", "middle");
-    // }
+        // svg_cpi.append("path")
+        // .datum(data)
+        // .attr("d", line)
+        // .attr("stroke", "lightgray");
+
+        svg_cpi.append("path")
+        .datum(highlightData)
+        .attr("d", line)
+        .attr("stroke", "yellow")
+        .attr("stroke-width", 5);
+    }
 
 
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
@@ -262,12 +263,6 @@ async function main() {
         drawLineAddPoints(svg_cpi, cpiNewVehiclesData, x_auto_CPI, y, "steelblue", "CUSR0000SETA01", "CPI Index 1982-1984=100");
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
         drawLineAddPoints(svg_cpi, cpiAllItemsData, x_CPI, y, "coral", "CPIAUCSL", "CPI Index 1982-1984=100");
-
-
-
-
-        // Add a title to the chart.
-        // h2.text("Consumer Price Indexes for All Urban Consumers from 1953 to 2025 (Seasonally Adjusted)");
     }
 
     // Function to draw the chart for Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks.
@@ -291,10 +286,6 @@ async function main() {
         drawLineAddPoints(svg_sales, domesticAutoSalesData, x_auto, y, "steelblue", "DAUTONSA", "Thousands of Units");
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
         drawLineAddPoints(svg_sales, domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA", "Thousands of Units");
-
-
-        // Add a title to the chart.
-        // h2.text("Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)"); 
     }
 
     // Function to draw the chart for Domestic Auto Production (DAUPSA).
@@ -330,6 +321,7 @@ async function main() {
         switch (type) {
         case "one":
             drawChartCPI();
+            showStoryCPI();
             break;
         case "two":
             drawChartSales();
@@ -338,11 +330,10 @@ async function main() {
             drawChartDAUPSA();
             break;
         case "summary":
-            
+            hr.style("display", "block");
             drawChartDAUPSA();
             drawChartSales();
             drawChartCPI();
-
             break;
         }
     }
