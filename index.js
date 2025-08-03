@@ -199,6 +199,7 @@ async function main() {
     //         .attr("text-anchor", "middle");
     // }
 
+
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
     function drawChartCPI() {
         svg_cpi.attr("height", height)
