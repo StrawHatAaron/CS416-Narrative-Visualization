@@ -183,61 +183,75 @@ async function main() {
             .attr("d", line(data));
 
         // Create a tooltip for displaying data on hover.
-        // const tooltip = d3.select("body").append("div")
-        //                 .attr("class", "tooltip")
-        //                 .style("position", "absolute")
-        //                 .style("background", color)
-        //                 .style("padding", "6px")
-        //                 .style("border", "1px solid #ccc")
-        //                 .style("border-radius", "4px")
-        //                 .style("pointer-events", "none")
-        //                 .style("opacity", 0);
-        // // Add points of tooltip data
-        // svg.selectAll(".dot" + fieldName) 
-        //     .data(data)
-        //     .enter().append("circle")
-        //     .attr("class", "dot" + fieldName)
-        //     .attr("cx", d => x(new Date(d.observation_date)))
-        //     .attr("cy", d => y(Number(d[fieldName])))
-        //     .attr("r", 4)
-        //     .attr("fill", color)
-        //     .attr("opacity", 0.6)
-        //     .on("mouseover", (event, d) => {
-        //         tooltip.transition().duration(200).style("opacity", 0.9);
-        //         tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
-        //                     `<strong>${label}:</strong> ${d[fieldName]}`)
-        //         .style("left", (event.pageX + 10) + "px")
-        //         .style("top", (event.pageY - 28) + "px");
-        //     })
-        //     .on("mouseout", () => {
-        //         tooltip.transition().duration(500).style("opacity", 0);
-        //     });
+        const tooltip = d3.select("body").append("div")
+                        .attr("class", "tooltip")
+                        .style("position", "absolute")
+                        .style("background", color)
+                        .style("padding", "6px")
+                        .style("border", "1px solid #ccc")
+                        .style("border-radius", "4px")
+                        .style("pointer-events", "none")
+                        .style("opacity", 0);
+        // Add points of tooltip data
+        svg.selectAll(".dot" + fieldName) 
+            .data(data)
+            .enter().append("circle")
+            .attr("class", "dot" + fieldName)
+            .attr("cx", d => x(new Date(d.observation_date)))
+            .attr("cy", d => y(Number(d[fieldName])))
+            .attr("r", 4)
+            .attr("fill", color)
+            .attr("opacity", 0.6)
+            .on("mouseover", (event, d) => {
+                tooltip.transition().duration(200).style("opacity", 0.9);
+                tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
+                            `<strong>${label}:</strong> ${d[fieldName]}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.transition().duration(500).style("opacity", 0);
+            });
     }
 
     // Highlight the 1980s to show the CPI trends 
     function showStoryCPI(){
-        // svg_cpi.selectAll("circle")
-        // .data(data)
-        // .enter()
-        // .append("circle")
-        // .attr("cx", d => xScale(d.x))
-        // .attr("cy", d => yScale(d.y))
-        // .attr("r", d => highlightCondition(d) ? 6 : 3)
-        // .attr("fill", d => highlightCondition(d) ? "red" : "gray");
+        // point to the year where things flip
+        svg_cpi.append("line")
+            .attr("x1", 275)
+            .attr("y1", 150)
+            .attr("x2", 405)
+            .attr("y2", 337)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+        // highlight the year where things flip 
+        svg_cpi.append("ellipse")
+            .attr("cx", 275)       // center x
+            .attr("cy", 445)        // center y
+            .attr("rx", 54)       // horizontal radius
+            .attr("ry", 25)        // vertical radius
+            .attr("fill", "yellow")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.4) // 0 = fully transparent, 1 = fully opaque
+            .attr("transform", "rotate(-25 150 75)"); // rotate 25° around center
+        // Append the text
+        const lines = ["In the start of the 1980s shortly after an energy crisis and during the ", 
+                       "boom of the semi-conductor, the Big Three U.S. automakers experienced intense ",
+                       "competition with Japan’s auto markets to create modern autos."];
+        const text = svg_cpi.append("text")
+        .attr("x", 335)
+        .attr("y", 95)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", "darkblue")
+        .attr("font-size", "16px");
+        lines.forEach((line, i) => {
+        text.append("tspan")
+            .attr("x", 335)
+            .attr("dy", i === 0 ? 0 : "1.2em") // vertical spacing
+            .text(line);
+        });
 
-        const line = d3.line().x(d => xScale(d.x)).y(d => yScale(d.y));
-        const highlightData = cpiNewVehiclesData.filter(d => d.x >= new Date("1980-01-01") && d.x <= new Date("1989-12-01"));
-
-        // svg_cpi.append("path")
-        // .datum(data)
-        // .attr("d", line)
-        // .attr("stroke", "lightgray");
-
-        svg_cpi.append("path")
-        .datum(highlightData)
-        .attr("d", line)
-        .attr("stroke", "yellow")
-        .attr("stroke-width", 5);
     }
 
 
