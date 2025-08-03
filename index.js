@@ -34,11 +34,16 @@ async function main() {
     const marginLeft = 40;
 
     // Create the SVG container.
-    const svg = d3.select("svg")
+    const svg = d3.select("svg#chart")
                     .attr("width", width)
                     .attr("height", height)
                     .attr("viewBox", [0, 0, width, height])
                     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+    const svg_legend = d3.select("svg#legend")
+        .attr("width", 200)
+        .attr("height", 100)
+        .attr("viewBox", [0, 0, 200, 100]);  
 
     const h2 = d3.select("h2")
         .style("text-align", "center");
@@ -55,7 +60,9 @@ async function main() {
     // Clear the SVG container.
     function clearSVG() {
         svg.selectAll("*").remove();
+        svg_legend.selectAll("*").remove();
         h2.select("*").remove();
+
     }
 
     function drawGraphBounds(x, y) {
@@ -149,8 +156,35 @@ async function main() {
         drawLineAddPoints(domesticAutoSalesData, x_auto, y, "steelblue", "DAUTONSA");
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
         drawLineAddPoints(domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA");
+
+
+
+        // Add a legend to differentiate between the two lines DAUTONSA and DLTRUCKSNSA.
+        const legend = svg_legend.append("g")
+            .attr("transform", "translate(20,20)");
+        const items = [ { color: "steelblue", label: "Domestic Autos (DAUTONSA)" },
+                        { color: "coral", label: "Light Weight Trucks (DLTRUCKSNSA)" }];
+
+        items.forEach((item, i) => {
+            const y = i * 20;
+            legend.append("circle")
+                .attr("cx", 0)
+                .attr("cy", y)
+                .attr("r", 6)
+                .style("fill", item.color);
+            legend.append("text")
+                .attr("x", 12)
+                .attr("y", y + 4)
+                .text(item.label)
+                .style("font-size", "12px")
+                .attr("alignment-baseline", "middle");
+        });
+
+        
+
+
         // Add a title to the chart.
-        h2.text("Motor Vehicle Retail Sales: Domestic Autos (DAUTONSA) and Light Weight Trucks (DLTRUCKSNSA) from 1967 to 2025 (Not Seasonally Adjusted)"); 
+        h2.text("Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)"); 
     }
 
     // Update the SVG based on the selected storyline
