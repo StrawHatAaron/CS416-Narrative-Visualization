@@ -47,6 +47,14 @@ async function main() {
     const marginRight = 30;
     const marginBottom = 30;
     const marginLeft = 40;
+    // Declare the buttons for the storyline.
+    const buttonCPI = d3.select("button#one-cpi");
+    const buttonSales = d3.select("button#two-sales").property("disabled", true);
+    const buttonProduction = d3.select("button#three-production").property("disabled", true);
+    const buttonSummary = d3.select("button#four-summary").property("disabled", true);
+    // Declare the report sections
+    const report = d3.selectAll("div#report").style("display", "none");
+
     // Declare seperators for the graphs
     const hr = d3.selectAll("hr#graph-seperator").style("display", "none"); 
     // Title containers for the graphs.
@@ -96,7 +104,7 @@ async function main() {
         h2_cpi.style("display", "none");
         h2_sales.style("display", "none");
         h2_production.style("display", "none");
-        
+        report.style("display", "none");
         hr.style("display", "none")
     }
 
@@ -484,20 +492,24 @@ async function main() {
         case "one":
             drawChartCPI();
             showStoryCPI();
+            buttonSales.property("disabled", false);
             break;
         case "two":
             drawChartSales();
             showStorySales();
+            buttonProduction.property("disabled", false);
             break;
         case "three":
             drawChartProduction();
             showStoryProduction();
+            buttonSummary.property("disabled", false);
             break;
         case "summary":
             hr.style("display", "block");
             drawChartProduction();
             drawChartSales();
             drawChartCPI();
+            report.style("display", "block");
             break;
         }
     }

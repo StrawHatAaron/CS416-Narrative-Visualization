@@ -50,7 +50,7 @@ div#chart-area {
 
 button{
   margin: 5px;
-  padding: 10px 20px;
+  padding: 10px 0px;
   font-size: 1.2em;
   cursor: pointer;
   background-color: steelblue;
@@ -66,6 +66,13 @@ button:hover {
   background-color: #0056b3;
 }
 
+button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 div#controls {
   display: flex;
   flex-direction: row;
@@ -73,6 +80,7 @@ div#controls {
   justify-content: center; /* now vertical */
   margin-top: 5px;
   align-items: center;     /* now horizontal */
+  text-align: center;
 
 }
 
@@ -106,4 +114,9 @@ div#top-level-graph-container {
 hr {
   margin-top: 3vh;
   margin-bottom: 7vh;
+}
+
+div#report-indent {
+  padding-left: 20px;
+
 }
