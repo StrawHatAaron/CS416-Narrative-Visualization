@@ -177,7 +177,7 @@ async function main() {
     }
 
     // Function to draw a line and add points with tooltips.
-    function drawLineAddPoints(svg, data, x, y, color, fieldName, label) {
+    function drawLineAddPoints(svg, data, x, y, color, fieldName, label, type) {
         
         // Declare the line generator.
         const line = d3.line()
@@ -189,37 +189,38 @@ async function main() {
             .attr("stroke", color)
             .attr("stroke-width", 1.5)
             .attr("d", line(data));
-
-        // Create a tooltip for displaying data on hover.
-        const tooltip = d3.select("body").append("div")
-                        .attr("class", "tooltip")
-                        .style("position", "absolute")
-                        .style("background", color)
-                        .style("padding", "6px")
-                        .style("border", "1px solid #ccc")
-                        .style("border-radius", "4px")
-                        .style("pointer-events", "none")
-                        .style("opacity", 0);
-        // Add points of tooltip data
-        svg.selectAll(".dot" + fieldName) 
-            .data(data)
-            .enter().append("circle")
-            .attr("class", "dot" + fieldName)
-            .attr("cx", d => x(new Date(d.observation_date)))
-            .attr("cy", d => y(Number(d[fieldName])))
-            .attr("r", 4)
-            .attr("fill", color)
-            .attr("opacity", 0.6)
-            .on("mouseover", (event, d) => {
-                tooltip.transition().duration(200).style("opacity", 0.9);
-                tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
-                            `<strong>${label}:</strong> ${d[fieldName]}`)
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 28) + "px");
-            })
-            .on("mouseout", () => {
-                tooltip.transition().duration(500).style("opacity", 0);
+        if (type == "summary") {
+            // Create a tooltip for displaying data on hover.
+            const tooltip = d3.select("body").append("div")
+                            .attr("class", "tooltip")
+                            .style("position", "absolute")
+                            .style("background", color)
+                            .style("padding", "6px")
+                            .style("border", "1px solid #ccc")
+                            .style("border-radius", "4px")
+                            .style("pointer-events", "none")
+                            .style("opacity", 0);
+            // Add points of tooltip data
+            svg.selectAll(".dot" + fieldName) 
+                .data(data)
+                .enter().append("circle")
+                .attr("class", "dot" + fieldName)
+                .attr("cx", d => x(new Date(d.observation_date)))
+                .attr("cy", d => y(Number(d[fieldName])))
+                .attr("r", 4)
+                .attr("fill", color)
+                .attr("opacity", 0.6)
+                .on("mouseover", (event, d) => {
+                    tooltip.transition().duration(200).style("opacity", 0.9);
+                    tooltip.html(`<strong>Date:</strong> ${d.observation_date}<br>`+
+                                `<strong>${label}:</strong> ${d[fieldName]}`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", () => {
+                    tooltip.transition().duration(500).style("opacity", 0);
             });
+        }
     }
 
     // Highlight the 1980s to show the CPI trends 
@@ -413,7 +414,7 @@ async function main() {
 
     // Function to draw the chart for Consumer Price Indexes for All Urban Consumers.
     
-    function drawChartCPI() {
+    function drawChartCPI(type) {
         // Add the title to the chart.
         fillTitle(h2_cpi, "Consumer Price Indexes for All Urban Consumers from 1953 to 2025 (Seasonally Adjusted)");
         // Show and shape the SVG graph for CPI.
@@ -430,13 +431,13 @@ async function main() {
         // Draw the graph bounds.
         drawGraphBounds(svg_cpi, x_auto_CPI, y, "CPI Index 1982-1984=100");
         // Draw the line and points for Domestic Auto Sales (DAUTONSA).
-        drawLineAddPoints(svg_cpi, cpiNewVehiclesData, x_auto_CPI, y, "steelblue", "CUSR0000SETA01", "CPI Index 1982-1984=100");
+        drawLineAddPoints(svg_cpi, cpiNewVehiclesData, x_auto_CPI, y, "steelblue", "CUSR0000SETA01", "CPI Index 1982-1984=100", type);
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
-        drawLineAddPoints(svg_cpi, cpiAllItemsData, x_CPI, y, "coral", "CPIAUCSL", "CPI Index 1982-1984=100");
+        drawLineAddPoints(svg_cpi, cpiAllItemsData, x_CPI, y, "coral", "CPIAUCSL", "CPI Index 1982-1984=100", type);
     }
 
     // Function to draw the chart for Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks.
-    function drawChartSales() {
+    function drawChartSales(type) {
         // Add the title to the chart.
         fillTitle(h2_sales, "Motor Vehicle Retail Sales for Domestic Autos and Domestic Light Weight Trucks from 1967 to 2025 (Not Seasonally Adjusted)");
         // Show and shape the SVG graph for Sales.
@@ -453,13 +454,13 @@ async function main() {
         // Draw the graph bounds.
         drawGraphBounds(svg_sales, x_auto, y, "Thousands of Units");
         // Draw the line and points for Domestic Auto Sales (DAUTONSA).
-        drawLineAddPoints(svg_sales, domesticAutoSalesData, x_auto, y, "steelblue", "DAUTONSA", "Thousands of Units");
+        drawLineAddPoints(svg_sales, domesticAutoSalesData, x_auto, y, "steelblue", "DAUTONSA", "Thousands of Units", type);
         // Draw the line and points for Domestic Light Weight Truck Sales (DLTRUCKSNSA).
-        drawLineAddPoints(svg_sales, domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA", "Thousands of Units");
+        drawLineAddPoints(svg_sales, domesticLightWeightTruckSalesData, x_truck, y, "coral", "DLTRUCKSNSA", "Thousands of Units", type);
     }
 
     // Function to draw the chart for Domestic Auto Production (DAUPSA).
-    function drawChartProduction() {
+    function drawChartProduction(type) {
         // Add the title to the chart.
         fillTitle(h2_production, "Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)");
         // Show and shape the SVG graph for Domestic Auto Production.
@@ -471,7 +472,7 @@ async function main() {
         // Draw the graph bounds.
         drawGraphBounds(svg_production, x, y, "Thousands of Units");
         // Draw the line and points for Domestic Auto Production (DAUPSA).          
-        drawLineAddPoints(svg_production, domesticAutoData, x, y, "steelblue", "DAUPSA", "Thousands of Units");
+        drawLineAddPoints(svg_production, domesticAutoData, x, y, "steelblue", "DAUPSA", "Thousands of Units", type);
         // Add zoom functionality to the chart.
         // const zoom = d3.zoom()
         //     .scaleExtent([1, 10])
@@ -490,26 +491,26 @@ async function main() {
         clearSVG();
         switch (type) {
         case "one":
-            drawChartCPI();
-            showStoryCPI();
+            drawChartCPI(type);
+            showStoryCPI(type);
             buttonSales.property("disabled", false);
             break;
         case "two":
-            drawChartSales();
-            showStorySales();
+            drawChartSales(type);
+            showStorySales(type);
             buttonProduction.property("disabled", false);
             break;
         case "three":
-            drawChartProduction();
-            showStoryProduction();
+            drawChartProduction(type);
+            showStoryProduction(type);
             buttonSummary.property("disabled", false);
             break;
         case "summary":
             hr.style("display", "block");
-            drawChartProduction();
-            drawChartSales();
-            drawChartCPI();
-            report.style("display", "block");
+            drawChartProduction(type);
+            drawChartSales(type);
+            drawChartCPI(type);
+            report.style("display", "inline");
             break;
         }
     }

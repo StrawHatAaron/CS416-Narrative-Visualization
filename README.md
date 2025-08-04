@@ -3,28 +3,54 @@
 
 DAUPSA.csv - https://fred.stlouisfed.org/graph/?graph_id=1477657&rn=942
 
+Narrative Visualization Essay Report
+
+Explanations behind USA's Declining popularity of Domestic Autos
 
 
+ Insights Gathered
+Due to globalization, trade agreements, profit margins, recessions and COVID-19, there has been a significant decline in popularity of domestic autos in the U.S. over the past 50 years, as seen in the data from the Federal Reserve Bank of St. Louis (CUSR0000SETA01, CPIAUCSL, DAUTONSA, DLTRUCKSNSA and DAUPSA). This trend will likely continue and can be explained using this data from FRED along with national events. Many emerging electric car companies like Slate and Rivian and the longstanding Big Three all have adapted increasing the number choices of light weight trucks into their fleets both electric and classic combustion.
 
-### FRED tends to organize body types into three major categories, especially from a statistical and regulatory standpoint:
+•	In the start of the 1980s shortly after an energy crisis and during the boom of the semi-conductor, the Big Three U.S. automakers experienced intense competition with Japan’s auto market to create modern autos (cars). This global competition drove down the CPI of New Vehicles in U.S. City Average with respect to other goods and services at large. This opened the way for tighter profit margins.
+o	In November 2021, Larry Printz wrote that during the 1980s the Big Three had to engineer cars with newer technology and meet an unprecedented demand for smaller fuel-efficient cars.
+o	In 1979 Peter J. Schuyten wrote in the New York Times that “The Menlo Park, Calif., market research company estimates that with the addition of such functions as transmission control and electronic braking, the volume could rise to as much as $3.9 billion by 1990; and this for an industry whose total billings this year will amount to around $6 billion.” Revealing positive predictions for manufacturers to keep driving up production. 
 
-##### 🚗 Autos (Passenger Cars)
-- Includes sedans, hatchbacks, station wagons, and coupes
-- Focused on personal transportation
-- Lower ground clearance and lighter frame
-- Examples: Honda Civic, Ford Fusion, Toyota Camry
+•	1994 North American Free Trade Agreement (NAFTA) is officially enacted buy Canada, Mexico and USA. This shaped the landscape of the North American auto manufacturing industry to outsource more manufacturing to Mexico due to cost of labor (Klier, Thomas H., and James Rubenstein). If 50 to 62.5 percent of the auto was assembled in North American U.S. tariffs would be lightened or avoided altogether for each assembled auto.
+
+•	1995, production declines as America’s Big Three lose Market Share to Japanese makers like Toyota, Honda due to Keiretsus in Diplomacy. A Yale Undergraduate research journal in 2020 explained: 
+“These tensions between the United States and Japan came to a fore in the 1995 auto dispute, in which President Clinton threatened to enact $6 billion in tariffs on luxury auto imports to the US from Japan in response to Japanese unwillingness to make room for American auto part imports in Japan. The lesson of the dispute, and its recognition of the increasingly globalized supremacy of the Japanese auto industry, speaks to the potency of Japan’s keiretsus to delay and avoid trade liberalization” (Boers, Jasper). 
+Due to this aggressive style of trade that did not allow the U.S. to enter the Japan auto market easily. The U.S. lost out on sale opportunities within Japan’s economy post Gulf because its policy makers argued that American manufacturing did not meet the Japanese auto market requirements. President Bill Clinton scheduled auto industry tariffs on the Japanese market for June 28, 1995. However, the tariffs never came into effect due to the Memorandum of Understanding (MOU) between the U.S. and Japan. (American Automotive Policy Council 2)
+
+•	At the turn of the millennium into the 2000s, a report from U.S. Department of Transportation the sales of lightweight trucks had fully caught up with autos in both use and sales for the first time. 
+o	The U.S. Department of Transportation noted the “Popularity of light trucks as personal vehicles continues to increase- retail sales of trucks for 2000 amount to 8,965,000 units sold.”
+
+•	With NAFTA’s ten-year phase-out of major trade barriers, which ended in 2004, foreign automakers began laying roots in Mexico. Brands like BMW, Mercedes-Benz, Kia, Mazda, and Audi unveiled plans to launch local assembly operations between 2013 and 2020. This influx boosted the number of vehicle manufacturers assembling cars in Mexico from 11 to 21 from 2004 to 2020 (Klier, Thomas H., and James Rubenstein). 
+
+•	2012 we see nearly a full recovery in the amount domestic auto production from the 2008 recession. Federal Bailouts, improved supplier relations and pent-up demand led to increases in Domestic Auto Production until about 2012.
+o	Jul 2007 – 346.0 units by thousands
+o	Jul 2008 – 375.4 units by thousands
+o	Jan 2009 – 107.5 units by thousands
+o	Jul 2012 – 361.4 units by thousands
+
+•	By the year 2015 the decision of USA automakers to remain conservative in the public demand for autos and strategic manufacturing to again produce more higher-margin vehicles like SUVs led to another decline in Domestic Auto Production. In 2015, industry experts Austan D. Goolsbee and Alan B. Krueger noted that they were pleased with the demand for autos since 2009 but also surprised since there had been a steady decrease in demand for the Big Three automakers for many years prior to 2009.
+
+•	In 2018 a notable milestone for the popularity or light weight trucks over autos was imminent with the Transportation Energy Data Book Edition 38 reported “11,609,000 light trucks were sold in 2018 which was 69% of new light vehicle sales” (Davis , Stacy C. C., and Robert G. Boundy.) This marked an undeniable decline of the popularity of Autos in the USA.
+
+•	By 2020 Production drops significantly more than it already was. COVID-19 caused chip shortages and labor disruptions. 
+ 
+
+Sources
+
+•	Klier, Thomas H., and James Rubenstein. “Mexico’s Growing Role in the Auto Industry Under NAFTA: Who Makes What and What Goes Where.” Economic Perspectives, Vol. 41, Federal Reserve Bank of Chicago, 6 Sept. 2017, www.chicagofed.org/publications/economic-perspectives/2017/6. 
+•	Boers, Jasper (2020) "The Keiretsu Advantage: How Japanese Automakers Thwarted American Competition," The Yale Undergraduate Research Journal: Vol. 1: Iss. 1, Article 33. Available at: https://elischolar.library.yale.edu/yurj/vol1/iss1/33
+•	American Automotive Policy Council, How Japan Has Maintained the Most Protected and Closed Auto Market in the Industrialized World, https://www.americanautomakers.org/sites/default/files/Japans%2BProtected%2BAuto%2BMarket.pdf. Accessed 20 July 2025.
+•	“Domestic Auto Production.” FRED, 27 June 2025, fred.stlouisfed.org/graph/?graph_id=1477657&rn=942.
+•	Cutcher-Gershenfeld, Joel, et al. The Decline and Resurgence of the U.S. Auto Industry, Economic Policy Institute, 6 May 2015, www.epi.org/publication/the-decline-and-resurgence-of-the-u-s-auto-industry/. 
+•	Goolsbee, Austan  D., and Alan B. Krueger. “Princeton University Library.” Princeton University, The Trustees of Princeton University, Feb. 2015, dataspace.princeton.edu/handle/88435/dsp01sj139419w. 
+•	Printz, Larry. “Was 1980 the Worst Automotive Year Ever?” Ars Technica, 22 Nov. 2021, arstechnica.com/cars/2021/11/was-1980-the-worst-automotive-year-ever/.
+•	Schuyten, Peter  J. “Detroit Is Running on Less Gas (Published 1979).” Detroit Seeks Semiconductors, New York Times, 6 Sept. 1979, www.nytimes.com/1979/06/24/archives/detroit-is-running-on-less-gas.html. 
+•	“Motor Vehicle Registrations.” The Vehicle Fleet - Our Nation’s Highways - 2000, U.S. Department of Transportation, 31 Mar. 2022, www.fhwa.dot.gov/ohim/onh00/onh2p3.htm. 
+•	Davis , Stacy C. C., and Robert  G. Boundy. “ORNL.” Transportation Energy Data Book Edition 38, Oak Ridge National Laboratory , Jan. 2020, info.ornl.gov/sites/publications/Files/Pub132663.pdf. 
+•	
 
 
-##### 🛻 Lightweight Trucks
-- Includes SUVs, crossovers, minivans, and pickups
-- Must weigh less than 10,000 lbs (GVWR—Gross Vehicle Weight Rating)
-- Used for both personal and light commercial purposes
-- Examples: Toyota RAV4, Ford F-150, Jeep Grand Cherokee
-
-
-##### 🚚 Heavyweight Trucks
-- Includes large pickups, box trucks, semis, and other commercial vehicles
-- Typically weigh more than 10,000 lbs GVWR
-- Mostly for business/fleet use: freight, construction, etc.
-- Examples: Ford Super Duty (F-450+), Freightliner Cascadia, Ram 5500
-So even though the retail world might advertise by style—like "sports sedan" or "luxury SUV"—FRED keeps it lean and structured around function and weight class. Want to plot a historical trend comparing how consumer preferences shifted between these categories? We could build something in D3 or Tableau that'll reveal some really cool patterns.
