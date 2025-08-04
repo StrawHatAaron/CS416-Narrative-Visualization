@@ -218,8 +218,8 @@ async function main() {
     function showStoryCPI(){
         // point to the year where things flip
         svg_cpi.append("line")
-            .attr("x1", 275)
-            .attr("y1", 150)
+            .attr("x1", 325)
+            .attr("y1", 140)
             .attr("x2", 405)
             .attr("y2", 337)
             .attr("stroke", "black")
@@ -237,13 +237,128 @@ async function main() {
         // Append the text
         const lines = ["In the start of the 1980s shortly after an energy crisis and during the ", 
                        "boom of the semi-conductor, the Big Three U.S. automakers experienced intense ",
-                       "competition with Japan’s auto markets to create modern autos."];
+                       "competition with Japan’s auto market to create modern autos (cars). This global",
+                       "competition drove down the CPI of New Vehicles in U.S. City Average with",
+                       "respect to other goods and services at large. This opened the way for tighter",
+                       "profit margins."];
         const text = svg_cpi.append("text")
         .attr("x", 335)
-        .attr("y", 95)
+        .attr("y", 54.5)
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "middle")
-        .attr("fill", "darkblue")
+        .attr("fill", "black")
+        .attr("font-size", "16px");
+        lines.forEach((line, i) => {
+        text.append("tspan")
+            .attr("x", 335)
+            .attr("dy", i === 0 ? 0 : "1em") // vertical spacing
+            .text(line);
+        });
+    }
+
+    // Highlight the 2000 and 2018 sales trends
+    function showStorySales(){
+        // point to the year where things flip
+        svg_sales.append("line")
+            .attr("x1", 365)
+            .attr("y1", 70)
+            .attr("x2", 490)
+            .attr("y2", 180)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+        // highlight the year where things flip 
+        svg_sales.append("ellipse")
+            .attr("cx", 515)       // center x
+            .attr("cy", 225)        // center y
+            .attr("rx", 54)       // horizontal radius
+            .attr("ry", 54)        // vertical radius
+            .attr("fill", "yellow")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.4); // 0 = fully transparent, 1 = fully opaque
+        // Append the text
+        const lines = ["At the turn of the millennium into the 2000s, a report from the ", 
+                       "U.S. Department of Transportation showed sales of lightweight trucks",
+                       "had fully caught up with autos in both use and sales for the first",
+                       "time."];
+        const text = svg_sales.append("text")
+        .attr("x", 335)
+        .attr("y", 14)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", "black")
+        .attr("font-size", "16px");
+        lines.forEach((line, i) => {
+        text.append("tspan")
+            .attr("x", 335)
+            .attr("dy", i === 0 ? 0 : "1.4em") // vertical spacing
+            .text(line);
+        });
+
+
+        // point to the year where things flip
+        svg_sales.append("line")
+            .attr("x1", 777)
+            .attr("y1", 70)
+            .attr("x2", 800)
+            .attr("y2", 105)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+        // highlight the year where things flip 
+        svg_sales.append("ellipse")
+            .attr("cx", 805)       // center x
+            .attr("cy", 110)        // center y
+            .attr("rx", 15)       // horizontal radius
+            .attr("ry", 15)        // vertical radius
+            .attr("fill", "yellow")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.4); // 0 = fully transparent, 1 = fully opaque
+        // Append the text
+        const lines2 = ["11,609,00 light weight", "trucks were sold in",
+                        "2018 which was 69% of new",
+                        "light vehicle sales"];
+        const text2 = svg_sales.append("text")
+        .attr("x", 750)
+        .attr("y", 77)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", "black")
+        .attr("font-size", "16px");
+        lines2.forEach((line, i) => {
+        text2.append("tspan")
+            .attr("x", 700)
+            .attr("dy", i === 0 ? 0 : "1.4em") // vertical spacing
+            .text(line);
+        });
+        
+    }
+
+    // needs work
+    function showStoryProduction(){
+        // point to the year where things flip
+        svg_production.append("line")
+            .attr("x1", 335)
+            .attr("y1", 308)
+            .attr("x2", 455)
+            .attr("y2", 400)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+        // highlight the year where things flip 
+        svg_production.append("ellipse")
+            .attr("cx", 465)       // center x
+            .attr("cy", 410)        // center y
+            .attr("rx", 15)       // horizontal radius
+            .attr("ry", 15)        // vertical radius
+            .attr("fill", "yellow")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.4); // 0 = fully transparent, 1 = fully opaque
+        // Append the text
+        const lines = ["2008 Financial Crisis"];
+        const text = svg_production.append("text")
+        .attr("x", 335)
+        .attr("y", 300)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", "black")
         .attr("font-size", "16px");
         lines.forEach((line, i) => {
         text.append("tspan")
@@ -252,6 +367,39 @@ async function main() {
             .text(line);
         });
 
+
+        // point to the year where things flip
+        svg_production.append("line")
+            .attr("x1", 670)
+            .attr("y1", 435)
+            .attr("x2", 755)
+            .attr("y2", 485)
+            .attr("stroke", "black")
+            .attr("stroke-width", 2);
+        // highlight the year where things flip 
+        svg_production.append("ellipse")
+            .attr("cx", 765)       // center x
+            .attr("cy", 495)        // center y
+            .attr("rx", 15)       // horizontal radius
+            .attr("ry", 15)        // vertical radius
+            .attr("fill", "yellow")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.4) // 0 = fully transparent, 1 = fully opaque
+        // Append the text
+        const lines2 = ["COVID-19 Recession"];
+        const text2 = svg_production.append("text")
+        .attr("x", 335)
+        .attr("y", 430)
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", "black")
+        .attr("font-size", "16px");
+        lines2.forEach((line, i) => {
+        text2.append("tspan")
+            .attr("x", 670)
+            .attr("dy", i === 0 ? 0 : "1.2em") // vertical spacing
+            .text(line);
+        });
     }
 
 
@@ -303,7 +451,7 @@ async function main() {
     }
 
     // Function to draw the chart for Domestic Auto Production (DAUPSA).
-    function drawChartDAUPSA() {
+    function drawChartProduction() {
         // Add the title to the chart.
         fillTitle(h2_production, "Domestic Auto Production (DAUPSA) from 1993 to 2025 (Seasonally Adjusted)");
         // Show and shape the SVG graph for Domestic Auto Production.
@@ -339,13 +487,15 @@ async function main() {
             break;
         case "two":
             drawChartSales();
+            showStorySales();
             break;
         case "three":
-            drawChartDAUPSA();
+            drawChartProduction();
+            showStoryProduction();
             break;
         case "summary":
             hr.style("display", "block");
-            drawChartDAUPSA();
+            drawChartProduction();
             drawChartSales();
             drawChartCPI();
             break;

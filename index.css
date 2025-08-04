@@ -29,6 +29,7 @@ h1 {
 
 div#instructions {
   text-align: center;
+  
 }
 
 h2 {
@@ -70,7 +71,7 @@ div#controls {
   flex-direction: row;
   gap: 8px; /* Adds space between buttons */
   justify-content: center; /* now vertical */
-  margin-top: 25px;
+  margin-top: 5px;
   align-items: center;     /* now horizontal */
 
 }
